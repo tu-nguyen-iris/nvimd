@@ -1,146 +1,313 @@
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set mouse=a 				" Enable mouse
-set tabstop=4 				" 
-set shiftwidth=4 			" 
-set listchars=tab:\¦\ 		" Tab charactor 
-set list
-set foldmethod=indent 		" 
-set foldlevelstart=99 		"  
-set number 					" Show line number
-set ignorecase 				" Enable case-sensitive 
-
-" Disable backup
-set nobackup
-set nowb
-set noswapfile
-
-syntax on
-
-" Enable copying from vim to clipboard
-if has('win32')
-	set clipboard=unnamed  
-else
-	set clipboard=unnamedplus
-endif
-
-" Auto reload content changed outside
-au CursorHold,CursorHoldI * checktime
-au FocusGained,BufEnter * :checktime
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
-			\ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == ''
-			\ | checktime 
-			\ | endif
-autocmd FileChangedShellPost *
-			\ echohl WarningMsg
-			\ | echo "File changed on disk. Buffer reloaded."
-			\ | echohl None
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Key mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-" Resize pane
-nmap <M-Right> :vertical resize +1<CR> 		
-nmap <M-Left> :vertical resize -1<CR>
-nmap <M-Down> :resize +1<CR>
-nmap <M-Up> :resize -1<CR>
-
-" Search a hightlighted text
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin list
-" (used for Vim-plug - https://github.com/junegunn/vim-plug)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin(stdpath('config').'/plugged')
-" Theme
-Plug 'joshdick/onedark.vim', 					" Dark theme
-Plug 'projekt0n/github-nvim-theme'
-
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-" File browser
-Plug 'preservim/nerdTree' 						" File browser  
-Plug 'Xuyuanp/nerdtree-git-plugin' 				" Git status
-Plug 'ryanoasis/vim-devicons' 					" Icon
+Plug 'f-person/git-blame.nvim'
+Plug 'Raimondi/delimitMate'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
+Plug 'dense-analysis/ale'
+Plug 'mattn/emmet-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'scrooloose/nerdtree'
+"Plug 'tsony-tsonev/nerdtree-git-plugin'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'unkiwii/vim-nerdtree-sync' 				" Sync current file 
-" Auto save wordspace 
-Plug 'thaerkh/vim-workspace'
-Plug  'xolox/vim-session'
-Plug 'xolox/vim-misc'
-" COMMENT CODE
-Plug 'terrortylor/nvim-comment'
-" File search
-Plug 'junegunn/fzf', 
-			\ { 'do': { -> fzf#install() } } 			" Fuzzy finder 
-Plug 'junegunn/fzf.vim'
-
-" Status bar
+Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
+Plug 'scrooloose/nerdcommenter'
+"Plug 'prettier/vim-prettier', { 'do': 'yarn install' }"
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'sheerun/vim-polyglot'
+Plug 'morhetz/gruvbox'
+Plug 'rafi/awesome-vim-colorschemes'  
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Terminal
+Plug 'Yggdroot/indentLine' 
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
+Plug 'tomasiser/vim-code-dark'
+Plug 'tpope/vim-fugitive'
+Plug 'projekt0n/github-nvim-theme'
 Plug 'voldikss/vim-floaterm' 					" Float terminal
-
-" Code intellisense
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " Language server 
-Plug 'jiangmiao/auto-pairs' 					" Parenthesis auto 
-Plug 'alvan/vim-closetag'
-Plug 'mattn/emmet-vim' 
-Plug 'preservim/nerdcommenter' 					" Comment code 
-"Plug 'liuchengxu/vista.vim' 					" Function tag bar 
-Plug 'alvan/vim-closetag' 						" Auto close HTML/XML tag 
-
-" Code syntax highlight
-Plug 'yuezk/vim-js' 							" Javascript
-Plug 'MaxMEllon/vim-jsx-pretty' 				" JSX/React
-Plug 'jackguo380/vim-lsp-cxx-highlight'			" C++ syntax
-Plug 'uiiaoo/java-syntax.vim' 					" Java
-
-" AutoSave
 Plug 'Pocco81/AutoSave.nvim'
-Plug 'kevinoid/vim-jsonc'
-
-" Debugging
-Plug 'puremourning/vimspector' 					" Vimspector
-
-" Source code version control
-Plug 'tpope/vim-fugitive' 						" Git
+Plug 'terrortylor/nvim-comment'
+Plug 'uiiaoo/java-syntax.vim' 					" Java
 call plug#end()
+let g:github_function_style = "italic"
+let g:github_sidebars = ["qf", "vista_kind", "terminal", "packer"]
+
+" Change the "hint" color to the "orange" color, and make the "error" color bright red
+
+colorscheme github_dimmed 
+inoremap jk <ESC>
+nmap <C-n> :NERDTreeToggle<CR>
+vmap ++ <plug>NERDCommenterToggle
+nmap ++ <plug>NERDCommenterToggle
+
+set mouse=a
+set number
+set hidden
+set cursorline
+set expandtab
+set autoindent
+set smartindent
+set shiftwidth=2
+set tabstop=4
+set encoding=utf8
+set history=5000
+set clipboard=unnamedplus
+
+" open NERDTree automatically
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree
+let g:NERDTreeGitStatusWithFlags = 1                    
+let g:NERDTreeIgnore = ['^node_modules$'] 
+" vim-prettier 
+let g:prettier#quickfix_enabled = 0
+let g:prettier#quickfix_auto_focus = 0 
+" prettier command for coc
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" run prettier on save
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin Setting
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set theme 
-colorscheme onedark
+" ctrlp
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
-" Overwrite some color highlight
-if (has("autocmd"))
-	augroup colorextend
-		autocmd ColorScheme 
-					\ * call onedark#extend_highlight("Comment",{"fg": {"gui": "#728083"}})
-		autocmd ColorScheme 
-					\ * call onedark#extend_highlight("LineNr", {"fg": {"gui": "#728083"}})
-	augroup END
+" j/k will move virtual lines (lines that wrap)
+noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
+noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap <C-s> :w<CR>
+nnoremap <C-Q> :wq<CR>
+
+" shift+arrow selection
+vmap <C-c> y<Esc>i
+vmap <C-x> d<Esc>i
+map <C-v> pi
+imap <C-v> <Esc>pi
+
+set cindent
+
+
+" sync open file with NERDTree
+" " Check if NERDTree is open or active
+function! IsNERDTreeOpen()        
+    return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
+function! SyncTree()
+    if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+        NERDTreeFind
+        wincmd p
+    endif
+endfunction
+
+" Highlight currently open buffer in NERDTree
+autocmd BufEnter * call SyncTree()
+
+" coc config
+let g:coc_global_extensions = [
+            \ 'coc-snippets',
+            \ 'coc-pairs',
+            \ 'coc-tsserver',
+            \ 'coc-eslint', 
+            \ 'coc-prettier', 
+            \ 'coc-json', 
+            \ 'coc-python',
+            \ ]
+" from readme
+" if hidden is not set, TextEdit might fail.
+set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_nfo()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <F2> <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <C-d> <Plug>(coc-range-select)
+xmap <silent> <C-d> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>i
+
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_statusline_ontop=0
+let g:airline_theme='base16_twilight'
+
+let g:airline#extensions#tabline#formatter = 'default'
+" navegação entre os buffers
+nnoremap <M-Right> :bn<cr>
+nnoremap <M-Left> :bp<cr>
+nnoremap <c-x> :bp \|bd #<cr>
+
+let g:ale_completion_enabled = 0
+let g:ale_linters = {'python': ['flake8', 'pylint'], 'javascript': ['eslint']}
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+            \ 'Modified'  :'✹',
+            \ 'Staged'    :'✚',
+            \ 'Untracked' :'✭',
+            \ 'Renamed'   :'➜',
+            \ 'Unmerged'  :'═',
+            \ 'Deleted'   :'✖',
+            \ 'Dirty'     :'✗',
+            \ 'Ignored'   :'☒',
+            \ 'Clean'     :'✔︎',
+            \ 'Unknown'   :'?',
+            \ }
+map <silent> <F5> :NERDTreeToggle<CR>
+"set Terminal 
+let g:floaterm_keymap_new    = '<F8>'
+let g:floaterm_keymap_prev   = '<F9>'
+let g:floaterm_keymap_next   = '<F10>'
+let g:floaterm_keymap_toggle = '<F12>'
+let g:floaterm_position = 'topright'
+let g:floaterm_width = 0.6
+let g:floaterm_height = 0.6
+let g:floaterm_title = 'Terminal $1/$2'
+let g:floaterm_wintype = 'float'
+let g:floaterm_rootmarkers = ['.pro']
+if has('win32')
+    let g:floaterm_shell = 'powershell -nologo'
 endif
+" Set color
+hi Floaterm guibg=Grey15
+hi FloatermBorder guifg=Orange guibg=DarkGreen
+"hi FloatermNC guibg=darkred
 
-" Disable automatic comment in newline
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-autocmd BufRead,BufNewFile *.mycjson set filetype=jsonc
-autocmd FileType json syntax match Comment +\/\/.\+$+
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Hotkey to manage terminals
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Open a new terminal 
+nnoremap   <silent>   <leader>to    :FloatermNew<CR>
+tnoremap   <silent>   <leader>to    <C-\><C-n>:FloatermNew<CR>
 
-" Other setting
-for setting_file in split(glob(stdpath('config').'/settings/*.vim'))
-	execute 'source' setting_file
-endfor
+" Kill current terminal 
+nnoremap <silent> 	<leader>tk 		:FloatermKill<CR>:FloatermPrev<CR>
+tnoremap <silent> 	<leader>tk 		<C-\><C-n>:FloatermKill<CR>:FloatermPrev<CR>
 
+" Navigation next and previous terminal 
+nnoremap <silent> 	<leader>tn 		:FloatermNext<CR>
+tnoremap <silent> 	<leader>tn 		<C-\><C-n>:FloatermNext<CR>
+nnoremap <silent> 	<leader>tp 		:FloatermPrev<CR>
+tnoremap <silent> 	<leader>tp 		<C-\><C-n>:FloatermPrev<CR>
+
+" Toggle terminal
+nnoremap <silent> 	<leader>tt 		:FloatermToggle<CR>
+tnoremap <silent> 	<leader>tt 		<C-\><C-n>:FloatermToggle<CR>
+
+" Focus terminal 
+nnoremap <silent> 	<leader>tf 		<C-\><C-n><C-W><Left>
+tnoremap <silent> 	<leader>tf 		<C-\><C-n><C-W><Left>
 lua << EOF
 local autosave = require("autosave")
 
@@ -149,16 +316,17 @@ enabled = true,
 execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
 events = {"InsertLeave", "TextChanged"},
 conditions = {
-	exists = true,
-	filename_is_not = {},
-	filetype_is_not = {},
-	modifiable = true
-	},
+    exists = true,
+    filename_is_not = {},
+    filetype_is_not = {},
+    modifiable = true
+    },
 write_all_buffers = false,
 on_off_commands = true,
 clean_command_line_interval = 0,
 debounce_delay = 135
 })
+
 local comment = require('nvim_comment')
 comment.setup({
 -- Linters prefer comment and line to have a space in between markers
@@ -175,12 +343,138 @@ operator_mapping = "gc",
 hook = nil
 })
 
-EOF
-nnoremap <leader>so :OpenSession 
-nnoremap <leader>ss :SaveSession
-nnoremap <leader>sd :DeleteSession<CR>
-nnoremap <leader>sc :CloseSession<CR>
-" d
+local cb = require'diffview.config'.diffview_callback
 
-:let g:session_autoload = 'yes'
-:let g:session_autosave = 'yes'
+require'diffview'.setup {
+  diff_binaries = false,    -- Show diffs for binaries
+  enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
+  use_icons = true,         -- Requires nvim-web-devicons
+  icons = {                 -- Only applies when use_icons is true.
+    folder_closed = "",
+    folder_open = "",
+  },
+  signs = {
+    fold_closed = "",
+    fold_open = "",
+  },
+  file_panel = {
+    position = "left",            -- One of 'left', 'right', 'top', 'bottom'
+    width = 35,                   -- Only applies when position is 'left' or 'right'
+    height = 10,                  -- Only applies when position is 'top' or 'bottom'
+    listing_style = "tree",       -- One of 'list' or 'tree'
+    tree_options = {              -- Only applies when listing_style is 'tree'
+      flatten_dirs = true,
+      folder_statuses = "always"  -- One of 'never', 'only_folded' or 'always'.
+    }
+  },
+  file_history_panel = {
+    position = "bottom",
+    width = 35,
+    height = 16,
+    log_options = {
+      max_count = 256,      -- Limit the number of commits
+      follow = false,       -- Follow renames (only for single file)
+      all = false,          -- Include all refs under 'refs/' including HEAD
+      merges = false,       -- List only merge commits
+      no_merges = false,    -- List no merge commits
+      reverse = false,      -- List commits in reverse order
+    },
+  },
+  default_args = {    -- Default args prepended to the arg-list for the listed commands
+    DiffviewOpen = {},
+    DiffviewFileHistory = {},
+  },
+  key_bindings = {
+    disable_defaults = false,                   -- Disable the default key bindings
+    -- The `view` bindings are active in the diff buffers, only when the current
+    -- tabpage is a Diffview.
+    view = {
+      ["<tab>"]      = cb("select_next_entry"),  -- Open the diff for the next file
+      ["<s-tab>"]    = cb("select_prev_entry"),  -- Open the diff for the previous file
+      ["gf"]         = cb("goto_file"),          -- Open the file in a new split in previous tabpage
+      ["<C-w><C-f>"] = cb("goto_file_split"),    -- Open the file in a new split
+      ["<C-w>gf"]    = cb("goto_file_tab"),      -- Open the file in a new tabpage
+      ["<leader>e"]  = cb("focus_files"),        -- Bring focus to the files panel
+      ["<leader>b"]  = cb("toggle_files"),       -- Toggle the files panel.
+    },
+    file_panel = {
+      ["j"]             = cb("next_entry"),           -- Bring the cursor to the next file entry
+      ["<down>"]        = cb("next_entry"),
+      ["k"]             = cb("prev_entry"),           -- Bring the cursor to the previous file entry.
+      ["<up>"]          = cb("prev_entry"),
+      ["<cr>"]          = cb("select_entry"),         -- Open the diff for the selected entry.
+      ["o"]             = cb("select_entry"),
+      ["<2-LeftMouse>"] = cb("select_entry"),
+      ["-"]             = cb("toggle_stage_entry"),   -- Stage / unstage the selected entry.
+      ["S"]             = cb("stage_all"),            -- Stage all entries.
+      ["U"]             = cb("unstage_all"),          -- Unstage all entries.
+      ["X"]             = cb("restore_entry"),        -- Restore entry to the state on the left side.
+      ["R"]             = cb("refresh_files"),        -- Update stats and entries in the file list.
+      ["<tab>"]         = cb("select_next_entry"),
+      ["<s-tab>"]       = cb("select_prev_entry"),
+      ["gf"]            = cb("goto_file"),
+      ["<C-w><C-f>"]    = cb("goto_file_split"),
+      ["<C-w>gf"]       = cb("goto_file_tab"),
+      ["i"]             = cb("listing_style"),        -- Toggle between 'list' and 'tree' views
+      ["f"]             = cb("toggle_flatten_dirs"),  -- Flatten empty subdirectories in tree listing style.
+      ["<leader>e"]     = cb("focus_files"),
+      ["<leader>b"]     = cb("toggle_files"),
+    },
+    file_history_panel = {
+      ["g!"]            = cb("options"),            -- Open the option panel
+      ["<C-A-d>"]       = cb("open_in_diffview"),   -- Open the entry under the cursor in a diffview
+      ["y"]             = cb("copy_hash"),          -- Copy the commit hash of the entry under the cursor
+      ["zR"]            = cb("open_all_folds"),
+      ["zM"]            = cb("close_all_folds"),
+      ["j"]             = cb("next_entry"),
+      ["<down>"]        = cb("next_entry"),
+      ["k"]             = cb("prev_entry"),
+      ["<up>"]          = cb("prev_entry"),
+      ["<cr>"]          = cb("select_entry"),
+      ["o"]             = cb("select_entry"),
+      ["<2-LeftMouse>"] = cb("select_entry"),
+      ["<tab>"]         = cb("select_next_entry"),
+      ["<s-tab>"]       = cb("select_prev_entry"),
+      ["gf"]            = cb("goto_file"),
+      ["<C-w><C-f>"]    = cb("goto_file_split"),
+      ["<C-w>gf"]       = cb("goto_file_tab"),
+      ["<leader>e"]     = cb("focus_files"),
+      ["<leader>b"]     = cb("toggle_files"),
+    },
+    option_panel = {
+      ["<tab>"] = cb("select"),
+      ["q"]     = cb("close"),
+    },
+  },
+}
+
+
+EOF
+nnoremap   <F8>    :FloatermNew --position=bottomleft --height=0.8 --width=0.6 --title='Git' lazygit<CR>
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+
